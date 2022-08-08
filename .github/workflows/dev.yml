@@ -40,4 +40,4 @@ jobs:
           skip_covered: false
           report_name: Coverage Report
       - name: Build wheel (but don't release)
-        run: pipenv run python setup.py bdist_wheel
+        run: pipenv run python setup.py sdist bdist_wheel

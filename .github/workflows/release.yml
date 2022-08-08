@@ -37,7 +37,7 @@ jobs:
           minimum_coverage: 75
           report_name: Coverage Report
       - name: Build wheel (but don't release)
-        run: pipenv run python setup.py bdist_wheel
+        run: pipenv run python setup.py sdist bdist_wheel
       - name: Create release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
