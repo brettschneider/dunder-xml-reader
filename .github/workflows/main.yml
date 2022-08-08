@@ -58,7 +58,7 @@ jobs:
           type: pep440
           result: micro
           release: stable
-          update: ./setup.cfg
+          update: ./pyproject.toml
       - name: Commit updated version file
         run: |
           VERSION=${{ toJSON(steps.version.outputs.result) }}
