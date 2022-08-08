@@ -3,8 +3,8 @@
 ## Description/Overview ##
 
 The `dunder_xml_reader` package provides classes and functions that aim to make navigating
-and extrating data from an XML document easier and more "Pythonic".   All you have to do is
-pass a string containing valid XML to the `parse_xml` function and it will return a Python
+and extracting data from an XML document easier and more "Pythonic".   All you have to do is
+pass a string containing valid XML to the `parse_xml()` function and it will return a Python
 object that exposes properties as dictionary keys and child-nodes as attributes.  The
 following sample code illustrates.  Consider the following XML:
 
