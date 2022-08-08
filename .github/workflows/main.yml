@@ -42,7 +42,7 @@ jobs:
         run: pipenv run python setup.py sdist bdist_wheel
       - name: Tag release
         run: |
-          VERSION=v$(cat setup.cfg | grep version | sed 's/.*= //')
+          VERSION=v$(cat pyproject.toml | grep version | awk -F'"' '{print $2}')
           git tag $VERSION
           git push origin $VERSION
       - name: Retrieve dev branch
@@ -58,7 +58,7 @@ jobs:
           type: pep440
           result: micro
           release: stable
-          update: ./setup.cfg
+          update: ./pyproject.toml
       - name: Commit updated version file
         run: |
           VERSION=${{ toJSON(steps.version.outputs.result) }}
