@@ -44,3 +44,9 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: dist/*
+      - name: Publish to PyPi (production)
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PROD_TOKEN }}
+          TWINE_NON_INTERACTIVE: 1
+        run: pipenv run twine upload --skip-existing dist/*
