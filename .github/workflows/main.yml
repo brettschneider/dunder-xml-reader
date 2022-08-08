@@ -54,7 +54,7 @@ jobs:
         id: version
         uses: vemel/nextversion@main
         with:
-          path: ./setup.cfg
+          path: ./pyproject.toml
           type: pep440
           result: micro
           release: stable
