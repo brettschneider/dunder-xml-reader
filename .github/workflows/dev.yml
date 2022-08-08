@@ -39,5 +39,11 @@ jobs:
           show_missing: true
           skip_covered: false
           report_name: Coverage Report
-      - name: Build wheel (but don't release)
+      - name: Build wheel and source distribution
         run: pipenv run python setup.py sdist bdist_wheel
+      - name: Publish to PyPi (tst)
+        uses: ortega2247/pypi-upload-action@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TEST_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
