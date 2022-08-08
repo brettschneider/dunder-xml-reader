@@ -24,7 +24,7 @@ following sample code illustrates.  Consider the following XML:
 It can be easily nagivated with the following Python code:
 
     >>> with open('order_request.xml') as infile:
-    ...     cxml = dunder_xml_reader.parse(infile.read())
+    ...     cxml = dunder_xml_reader.parse_xml(infile.read())
     >>>
     >>> print(cxml['payloadID'])
     1233444-2001@premier.workchairs.com
