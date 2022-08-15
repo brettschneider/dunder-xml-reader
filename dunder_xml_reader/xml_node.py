@@ -27,7 +27,7 @@ class XmlNode:
 
     def text(self) -> str:
         """Get the node's text (the string between the XML tags)."""
-        return self.node.text
+        return '' if self.node.text is None else self.node.text
 
     def tag(self) -> str:
         """Get the XML element tag from the node."""
