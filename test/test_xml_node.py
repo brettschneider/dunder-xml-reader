@@ -241,3 +241,14 @@ def test_map(sample_xml_text):
     assert result == ['bigadmin@marketplace.org', 'admin@acme.com']
 
 
+def test_returns_blank_if_empty_element(sample_xml_text):
+    # Given
+    conf_header = parse_xml(sample_xml_text).Request.ConfirmationRequest.ConfirmationHeader
+
+    # When
+    result = conf_header.Notes.text()
+
+    # Then
+    assert result == ''
+
+
