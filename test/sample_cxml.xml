@@ -55,6 +55,7 @@
                     </Phone>
                 </Contact>
                 <Comments xml:lang="en-CA">Look's great</Comments>
+                <Notes></Notes>
             </ConfirmationHeader>
             <OrderReference orderID="DO1234">
                 <DocumentReference payloadID="32232995@ariba.acme.com"/>
