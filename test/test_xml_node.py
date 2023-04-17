@@ -252,3 +252,55 @@ def test_returns_blank_if_empty_element(sample_xml_text):
     assert result == ''
 
 
+def test_with_namespaces(sample_soap_text):
+    # Given
+    raw_text = sample_soap_text
+
+    # When
+    result = parse_xml(raw_text, namespaces={
+        'http://schemas.xmlsoap.org/soap/envelope/': 'soap',
+        'http://insurance.com/webservices/ReceiveClaim.job': 'claim'
+    })
+
+    # Then
+    assert result.raw_text is raw_text
+    assert result.tag() == 'soap_Envelope'
+    assert dir(result.soap_Body) == ['claim_ReceiveClaimResponse']
+    assert hasattr(result.soap_Body, 'claim_ReceiveClaimResponse')
+    assert result.soap_Body.claim_ReceiveClaimResponse.claim_ClaimResponse.claim_status.text() == 'S'
+
+
+def test_with_blanked_namespaces(sample_soap_text):
+    # Given
+    raw_text = sample_soap_text
+
+    # When
+    result = parse_xml(raw_text, namespaces={
+        'http://schemas.xmlsoap.org/soap/envelope/',
+        'http://insurance.com/webservices/ReceiveClaim.job'
+    })
+
+    # Then
+    assert result.raw_text is raw_text
+    assert result.tag() == 'Envelope'
+    assert dir(result.Body) == ['ReceiveClaimResponse']
+    assert hasattr(result.Body, 'ReceiveClaimResponse')
+    assert result.Body.ReceiveClaimResponse.ClaimResponse.status.text() == 'S'
+
+
+def test_with_some_blanked_namespaces(sample_soap_text):
+    # Given
+    raw_text = sample_soap_text
+
+    # When
+    result = parse_xml(raw_text, namespaces={
+        'http://schemas.xmlsoap.org/soap/envelope/': 'soap',
+        'http://insurance.com/webservices/ReceiveClaim.job': None
+    })
+
+    # Then
+    assert result.raw_text is raw_text
+    assert result.tag() == 'soap_Envelope'
+    assert dir(result.soap_Body) == ['ReceiveClaimResponse']
+    assert hasattr(result.soap_Body, 'ReceiveClaimResponse')
+    assert result.soap_Body.ReceiveClaimResponse.ClaimResponse.status.text() == 'S'

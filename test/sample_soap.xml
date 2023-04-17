@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  <soapenv:Body>
+    <ReceiveClaimResponse xmlns="http://insurance.com/webservices/ReceiveClaim.job">
+      <ClaimResponse>
+        <status>S</status>
+        <errorDetail/>
+        <claimNumber>LC0000001742</claimNumber>
+      </ClaimResponse>
+    </ReceiveClaimResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
