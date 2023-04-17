@@ -40,14 +40,17 @@ from dunder_xml_reader.xml_node import XmlNode
 from dunder_xml_reader.safe_reference import SafeReference
 
 
-def parse_xml(raw_text: str) -> XmlNode:
+def parse_xml(raw_text: str, namespaces=None) -> XmlNode:
     """
     Parse raw_text as XML and return a XmlNode instance of the root.
     :param raw_text: string holding valid XML
+    :param namespaces: dict of namespaces
     :return: XmlNode instance pointing to root of XML
     """
     node = xml.etree.ElementTree.fromstring(raw_text)
-    return XmlNode(node=node, parent_node=None, raw_text=raw_text)
+    
+    return XmlNode(node=node, parent_node=None, raw_text=raw_text, \
+                   namespaces=namespaces)
 
 
 def safe_reference(object, default='') -> SafeReference:

@@ -231,6 +231,47 @@ You can also use the built-in `len()` function with CxmlNodes:
     DUNS, CompanyName, InteropKey
     >>>
 
+### XML with namespaces ###
+
+The `dunder_xml_reader` package can handle XML with varying defined namespaces.  It does
+this by optionally replacing namespaces in tags with a alias prefix.  Take the following XML
+for example:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+      <soapenv:Body>
+        <ReceiveClaimResponse xmlns="http://insurance.com/webservices/ReceiveClaim.job">
+          <ClaimResponse>
+            <status>S</status>
+            <errorDetail/>
+            <claimNumber>LC0000001742</claimNumber>
+          </ClaimResponse>
+        </ReceiveClaimResponse>
+      </soapenv:Body>
+    </soapenv:Envelope>
+
+Using the `namespaces` argument to `parse_xml()`, you can have the attributes prefixed with
+an alias:
+
+    >>> soap = parse_xml(raw_soap_text, namespaces={
+    ...   'http://schemas.xmlsoap.org/soap/envelope/': 'soap',
+    ...   'http://insurance.com/webservices/ReceiveClaim.job': 'claim'
+    ... }
+    >>> soap.soap_Body.claim_ReceiveClaimResponse.claim_ClaimResponse.claim_status.text()
+    S
+    >>>
+
+If you don't want any prefixes and you just want to strip out the namespace references you
+can either pass a `set` of namespace strings to `parse_xml()`:
+
+    >>> soap = parse_xml(raw_soap_text, namespaces={
+    ...   'http://schemas.xmlsoap.org/soap/envelope/',
+    ...   'http://insurance.com/webservices/ReceiveClaim.job'
+    ... }
+    >>> soap.Body.ReceiveClaimResponse.ClaimResponse.status.text()
+    S
+    >>>
+
 ## Bonus: SafeReference ##
 
 SafeReference is a wrapper that you can wrap a xmlNode instance in (or any other Python object

@@ -7,3 +7,4 @@ dist
 dunder_xml_reader.egg-info
 htmlcov
 test_results.xml
+__pycache__
