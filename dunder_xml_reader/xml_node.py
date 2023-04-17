@@ -13,7 +13,7 @@ class XmlNode:
     GitHub repo's README.md for examples on how to use.
     """
 
-    def __init__(self, node, parent_node=None, raw_text: str = None):
+    def __init__(self, node, parent_node=None, raw_text: str = None, namespaces=None):
         """
         Constructor.
         :param node: A Python ElementTree (root) node to wrap
@@ -22,6 +22,7 @@ class XmlNode:
         """
         self.raw_text = raw_text
         self.node = node
+        self.namespaces = namespaces if namespaces is not None else {}
         self.case_insensitive_props = dict((k.lower(), k) for k in self.node.attrib)
         self.parent_node = parent_node
 
@@ -31,7 +32,7 @@ class XmlNode:
 
     def tag(self) -> str:
         """Get the XML element tag from the node."""
-        return self.node.tag
+        return self._fixtag(self.node.tag)
 
     def get(self, item: str, default: str = None) -> str:
         """Get the given property from the node."""
@@ -52,11 +53,12 @@ class XmlNode:
         return case_sensitive_item in self.node.attrib
 
     def __getattr__(self, attribute: str):
-        nodes = [n for n in self.node if n.tag.lower() == attribute.lower()]
+        nodes = [n for n in self.node if self._fixtag(n.tag).lower() == attribute.lower()]
         if len(nodes) == 1:
-            return XmlNode(node=nodes[0], parent_node=self.node)
+            return XmlNode(node=nodes[0], parent_node=self.node, namespaces=self.namespaces)
         if len(nodes) > 1:
-            return XmlNodeList([XmlNode(node=n, parent_node=self.node) for n in nodes])
+            return XmlNodeList([XmlNode(node=n, parent_node=self.node,
+                                        namespaces=self.namespaces) for n in nodes])
         raise AttributeError(f"'{self.node.tag}' object has no attribute '{attribute}'")
 
     def __len__(self):
@@ -66,4 +68,21 @@ class XmlNode:
         return f"XmlNode: {self.tag()}"
 
     def __dir__(self):
-        return [n.tag for n in self.node]
+        return [self._fixtag(n.tag) for n in self.node]
+
+    def _fixtag(self, tag):
+        for ns_tag in self.namespaces:
+            full_tag = f"{{{ns_tag}}}"
+            if tag.startswith(full_tag):
+                prefix = self._ns_prefix(ns_tag)
+                return tag.replace(full_tag, prefix)
+        return tag
+
+    def _ns_prefix(self, ns):
+        if isinstance(self.namespaces, set):
+            return ''
+        else:
+            if self.namespaces[ns]:
+                return f"{self.namespaces[ns]}_"
+            else:
+                return ''
