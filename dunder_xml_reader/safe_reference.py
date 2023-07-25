@@ -16,6 +16,21 @@ class SafeReference:
                 print(f"SafeReference: Dereference fault: {self.object.__class__.__name__}.{item}", file=sys.stderr)
             return SafeReference(self.default, self.default)
 
+    class Iterator:
+        def __init__(self, obj):
+            self.obj = obj
+            self.max_index = len(obj)
+            self.current_index = 0
+
+        def __next__(self):
+            if self.current_index < self.max_index:
+                self.current_index += 1
+                return self.obj[self.current_index-1]
+            raise StopIteration
+
+    def __iter__(self):
+        return SafeReference.Iterator(self)
+
     def __getitem__(self, item):
         try:
             return SafeReference(self.object.__getitem__(item), self.default)

@@ -315,7 +315,7 @@ an example:
 
     >>> cxml = parse_cxml(raw_xml_text_thats_missing_a_BillTo_element)
     >>> safe_cxml = safe_reference(cxml, 'n/a')
-    >>> x = cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
+    >>> x = safe_cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
     >>> print(x)
     n/a
     >>>
