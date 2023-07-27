@@ -126,4 +126,19 @@ def test_passes_bool_dereference_unsuccessfully_gracefully(sut, mocker):
     result = bool(sut.Footer.From.Credential[0].Identity.text())
 
     # Then
-    assert result # Still is True because the default evaluates to True.
+    assert result  # Still is True because the default evaluates to True.
+
+
+def test_iterating_and_indexing_as_array(sut):
+    # Given
+    result = []
+
+    # When
+    for item in sut.Header.To.Credential:
+        result.append(item.identity.text())
+
+    # Then
+    assert result == ['bigadmin@marketplace.org', 'admin@acme.com']
+    assert sut.Header.To.Credential[2] == "isnt-there"  # Doesn't exist in the XML
+
+
