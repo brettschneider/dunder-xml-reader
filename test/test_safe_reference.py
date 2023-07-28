@@ -2,7 +2,7 @@
 
 import pytest
 
-from dunder_xml_reader import parse_xml, safe_reference
+from dunder_xml_reader import parse_xml, safe_reference, SafeReference
 
 
 @pytest.fixture
@@ -142,3 +142,21 @@ def test_iterating_and_indexing_as_array(sut):
     assert sut.Header.To.Credential[2] == "isnt-there"  # Doesn't exist in the XML
 
 
+def test_safe_reference_wrap_methods_true(xml_doc):
+    # Given
+    sut = safe_reference(xml_doc)
+    # When
+    result = sut.Header.From.Credential[0].Identity.text()
+
+    # Then
+    assert isinstance(result, SafeReference)
+
+
+def test_safe_reference_wrap_methods_false(xml_doc):
+    # Given
+    sut = safe_reference(xml_doc, wrap_methods=False)
+    # When
+    result = sut.Header.From.Credential[0].Identity.text()
+
+    # Then
+    assert isinstance(result, str)
