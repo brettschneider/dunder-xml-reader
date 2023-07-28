@@ -34,10 +34,11 @@ checks for missing nodes in an XML tree less tedious.
     >>>
 
 """
+import re
 import xml.etree.ElementTree
 
-from dunder_xml_reader.xml_node import XmlNode
 from dunder_xml_reader.safe_reference import SafeReference
+from dunder_xml_reader.xml_node import XmlNode
 
 
 def parse_xml(raw_text: str, namespaces=None) -> XmlNode:
@@ -48,16 +49,28 @@ def parse_xml(raw_text: str, namespaces=None) -> XmlNode:
     :return: XmlNode instance pointing to root of XML
     """
     node = xml.etree.ElementTree.fromstring(raw_text)
-    
-    return XmlNode(node=node, parent_node=None, raw_text=raw_text, \
-                   namespaces=namespaces)
+
+    return XmlNode(node=node, parent_node=None, raw_text=raw_text, namespaces=namespaces)
 
 
-def safe_reference(object, default='') -> SafeReference:
+def safe_reference(object, default='', wrap_methods=True) -> SafeReference:
     """
     Wrap object graph in a SafeReference instance.
     :param object: The object to wrap
     :param default: What should be returned instead of throwing Exception
+    :param wrap_methods: Should calls to methods return a SafeReference or the actual result?
     :return: SafeReference instance
     """
-    return SafeReference(object, default)
+    return SafeReference(object, default, wrap_methods)
+
+
+def extract_namespaces(xml: str) -> set:
+    namespaces = set()
+    pattern = r'xmlns(:[a-zA-Z0-9-]+)?=("|\')([^("|\')]+)("|\')'
+    matches = re.findall(pattern, xml)
+    for match in matches:
+        prefix, _, uri, _ = match
+        prefix = prefix.replace(':', '')
+        prefix = None if not prefix else prefix
+        namespaces.add((prefix, uri))
+    return namespaces
