@@ -24,41 +24,41 @@ following sample code illustrates.  Consider the following XML:
 It can be easily nagivated with the following Python code:
 
     >>> with open('order_request.xml') as infile:
-    ...     cxml = dunder_xml_reader.parse_xml(infile.read())
+    ...     xml = dunder_xml_reader.parse_xml(infile.read())
     >>>
-    >>> print(cxml['payloadID'])
+    >>> print(xml['payloadID'])
     1233444-2001@premier.workchairs.com
     >>>
-    >>> print(cxml.Header.To.Credential[0].Identity.text())
+    >>> print(xml.Header.To.Credential[0].Identity.text())
     bigadmin@marketplace.org
     >>>
 
-As you can see, the property `payloadID` is accessed as if it were a dictionary key of the `cxml`
+As you can see, the property `payloadID` is accessed as if it were a dictionary key of the `xml`
 object.  Likewise, the `Header` child node of the cXML document is accessed as if it were an
-attribute of the `cxml` object.
+attribute of the `xml` object.
 
 The Python object(s) returned by `parse_xml()` use Python _dunder methods_ to fulfill
 functionality provided by other Python built-ins:
 
     >>> # Python's "in" operator
     >>>
-    >>> 'payloadID' in cxml
+    >>> 'payloadID' in xml
     True
-    >>> 'someOtherThing' in cxml
+    >>> 'someOtherThing' in xml
     False
     >>>
 
     >>> # Python's "hasattr" function
     >>>
-    >>> hasattr(cxml, 'Header')
+    >>> hasattr(xml, 'Header')
     True
-    >> hasattr(cxml, 'Footer')
+    >> hasattr(xml, 'Footer')
     False
     >>>
 
     >>> # Python's "len" function
     >>>
-    >>> len(cxml.Header.To.Credential)
+    >>> len(xml.Header.To.Credential)
     2
     >>>
 
@@ -98,24 +98,24 @@ The following are some examples of how you can use the Python objects returns by
 
 #### <a id="dict"></a> Getting property values by dereferencing as a dictionary ####
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> payload_id = cxml['payloadID']
+    >>> xml = parse_xml(raw_xml_text)
+    >>> payload_id = xml['payloadID']
     >>> print(payload_id)
     1233444-2001@premier.workchairs.com
     >>>
 
 You can even check to see if a property exists using Python's built-in `in` operator
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> 'payloadID' in cxml
+    >>> xml = parse_xml(raw_xml_text)
+    >>> 'payloadID' in xml
     True
-    >>> 'someOtherWeirdThing` in cxml
+    >>> 'someOtherWeirdThing` in xml
     False
 
 #### <a id="list"></a> Getting siblings by dereferencing as a list ####
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> second_credential = cxml.Header.To.Credential[1]
+    >>> xml = parse_xml(raw_xml_text)
+    >>> second_credential = xml.Header.To.Credential[1]
     >>> print(second_credential.Identity.text())
     admin@acme.com
     >>>
@@ -123,8 +123,8 @@ You can even check to see if a property exists using Python's built-in `in` oper
 A nice side effect of being able to dereference an CxmlNode as a list is that you can for-loop
 over CxmlNodes:
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> for cred in cxml.Header.To.Credential
+    >>> xml = parse_xml(raw_xml_text)
+    >>> for cred in xml.Header.To.Credential
     ...   print(cred['domain'], cred.Identity.text())
     ...
     AribaNetworkUserId bigadmin@marketplace.org
@@ -133,8 +133,8 @@ over CxmlNodes:
 
 You can also use the built-in `len()` function with CxmlNodes:
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> print(len(cxml.Header.To.Credential))
+    >>> xml = parse_xml(raw_xml_text)
+    >>> print(len(xml.Header.To.Credential))
     2
     >>>
 
@@ -147,24 +147,24 @@ You can also use the built-in `len()` function with CxmlNodes:
 
 #### <a id="text"></a> Getting the inner-text of the element with the `.text()` method ####
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> node = cxml.Header.From.Credential.Identity
+    >>> xml = parse_xml(raw_xml_text)
+    >>> node = xml.Header.From.Credential.Identity
     >>> print(node.text())
     942888711
     >>>
 
 #### <a id="first"></a> Getting the first of a list of siblings with the `.first()` method ####
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> node = cxml.Header.To.Credential.first()
+    >>> xml = parse_xml(raw_xml_text)
+    >>> node = xml.Header.To.Credential.first()
     >>> print node['type']
     marketplace
     >>>
 
 #### <a id="last"></a> Getting the last of a list of siblings with the `.last()` method ####
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> print(cxml.Header.To.Credential.last().Identity.text())
+    >>> xml = parse_xml(raw_xml_text)
+    >>> print(xml.Header.To.Credential.last().Identity.text())
     admin@acme.com
     >>>
 
@@ -226,15 +226,15 @@ You can also use the built-in `len()` function with CxmlNodes:
 
 #### <a id="join_prop"></a> String joining with the `.join_prop()` method ####
 
-    >>> cxml = parse_xml(raw_xml_text)
-    >>> print(cxml.Header.From.Credential.join_prop('domain'))
+    >>> xml = parse_xml(raw_xml_text)
+    >>> print(xml.Header.From.Credential.join_prop('domain'))
     DUNS, CompanyName, InteropKey
     >>>
 
 ### XML with namespaces ###
 
 The `dunder_xml_reader` package can handle XML with varying defined namespaces.  It does
-this by optionally replacing namespaces in tags with a alias prefix.  Take the following XML
+this by optionally replacing namespaces in tags with an alias prefix.  Take the following XML
 for example:
 
     <?xml version="1.0" encoding="UTF-8"?>
@@ -282,27 +282,27 @@ graph for that matter) that will prevent errors like:
 
 A quick example.  Say you want to issue the following line of code:
 
-    >>> x = cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
+    >>> x = xml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
 
-But, the XML that was parsed in order to create the `cxml` object doesn't have a `BillTo`
+But, the XML that was parsed in order to create the `xml` object doesn't have a `BillTo`
 element.  You'd expect to get the following exception:
 
     AttributeError: 'OrderRequestHeader' object has no attribute 'BillTo'
 
 Now you could test your way through the graph heirchy (aka _look-before-you-leap_):
 
-    >>> if hasattr(cxml, 'Request') and \
-    ...    hasattr(cxml.Request, 'OrderRequest') and \
-    ...    hasattr(cxml.Request.OrderRequest, 'OrderRequestHeader') and \
-    ...    hasattr(cxml.Request.OrderRequest.OrderRequestHeader, 'BillTo'):
-    ...   x = cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
+    >>> if hasattr(xml, 'Request') and \
+    ...    hasattr(xml.Request, 'OrderRequest') and \
+    ...    hasattr(xml.Request.OrderRequest, 'OrderRequestHeader') and \
+    ...    hasattr(xml.Request.OrderRequest.OrderRequestHeader, 'BillTo'):
+    ...   x = xml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
     ... else:
     ...   x = ''
 
 Or, you could just wrap your assignment in a try/except (aka _ask-for-forgiveness_):
 
     >>> try:
-    ...   x = cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
+    ...   x = xml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
     ... except AttributeError:
     ...   x = ''
 
@@ -313,9 +313,9 @@ for the requested attribute to be there or missing.  If it's there, it will retu
 requested attribute.  However, if it's not there, it will return a default-value.  Here's
 an example:
 
-    >>> cxml = parse_cxml(raw_xml_text_thats_missing_a_BillTo_element)
-    >>> safe_cxml = safe_reference(cxml, 'n/a')
-    >>> x = safe_cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
+    >>> xml = parse_xml(raw_xml_text_thats_missing_a_BillTo_element)
+    >>> safe_xml = safe_reference(xml, 'n/a')
+    >>> x = safe_xml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
     >>> print(x)
     n/a
     >>>
@@ -325,9 +325,34 @@ This result of `n/a` will be the result no matter what item is missing (`Request
 dereferencing are missing, the default will be returned.  However, if nothing is missing, the
 actual graph value will be returned.
 
-    >>> cxml = parse_cxml(raw_xml_text_with_nothing_missing)
-    >>> safe_cxml = safe_reference(cxml, 'n/a')
-    >>> x = cxml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
+    >>> xml = parse_xml(raw_xml_text_with_nothing_missing)
+    >>> safe_xml = safe_reference(xml, 'n/a')
+    >>> x = safe_xml.Request.OrderRequest.OrderRequestHeader.BillTo.Address.PostalAddress.City.text()
     >>> print(x)
     New York
+    >>>
+
+
+## Bonus 2: extract_namespaces() ##
+
+If you have a chunk of XML or a SOAP message that conains numerous namespace references, figuring
+our what the namespaces are (so you can pass them as an argument to the `parse_xml()`), you can use
+the `extract_namespaces()` function:
+
+    >>> from dunder_xml_reader import extract_namespaces
+    >>> xml = """
+    ...     <section xmlns="http://www.ibm.com/events" xmlns:bk="urn:loc.gov:books" xmlns:pi="urn:personalInformation"
+    ...              xmlns:isbn='urn:ISBN:0-395-36341-6'>
+    ...         <title>Book-Signing Event</title>
+    ...         <signing>
+    ...             <bk:author pi:title="Mr" pi:name="Jim Ross"/>
+    ...             <book bk:title="Writing COBOL for Fun and Profit" isbn:number="0426070806"/>
+    ...             <comment xmlns=''>What a great issue!</comment>
+    ...         </signing>
+    ...     </section>
+    ...  """
+    ...
+    >>> ns = extract_namespaces(xml)
+    >>> print(ns)
+    {(None, 'http://www.ibm.com/events'), ('bk', 'urn:loc.gov:books'), ('pi', 'urn:personalInformation'), ('isbn', 'urn:ISBN:0-395-36341-6') }
     >>>

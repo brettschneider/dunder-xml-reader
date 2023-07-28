@@ -34,6 +34,7 @@ checks for missing nodes in an XML tree less tedious.
     >>>
 
 """
+import re
 import xml.etree.ElementTree
 
 from dunder_xml_reader.safe_reference import SafeReference
@@ -61,3 +62,15 @@ def safe_reference(object, default='', wrap_methods=True) -> SafeReference:
     :return: SafeReference instance
     """
     return SafeReference(object, default, wrap_methods)
+
+
+def extract_namespaces(xml: str) -> set:
+    namespaces = set()
+    pattern = r'xmlns(:[a-zA-Z0-9-]+)?=("|\')([^("|\')]+)("|\')'
+    matches = re.findall(pattern, xml)
+    for match in matches:
+        prefix, _, uri, _ = match
+        prefix = prefix.replace(':', '')
+        prefix = None if not prefix else prefix
+        namespaces.add((prefix, uri))
+    return namespaces
