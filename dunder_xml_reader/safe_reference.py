@@ -4,7 +4,7 @@ import sys
 
 class SafeReference:
 
-    def __init__(self, object, default, wrap_methods):
+    def __init__(self, object, default, wrap_methods=True):
         self.object = object
         self.default = default
         self.wrap_methods = wrap_methods
