@@ -36,15 +36,19 @@ class XmlNode:
 
     def first(self, default=None):
         """Seamless interop with XmlNodeList"""
-        return self
+        return XmlNodeList([self]).first(default)
+
+    def last(self, default=None):
+        """Seamless interop with XmlNodeList"""
+        return XmlNodeList([self]).last(default)
 
     def filter(self, func: callable):
         """Seamless interop with XmlNodeList"""
-        return XmlNodeList([self]) if func(self) else XmlNodeList([])
+        return XmlNodeList([self]).filter(func)
 
     def map(self, func: callable):
         """Seamless interop with XmlNodeList"""
-        return XmlNodeList([func(self)])
+        return XmlNodeList([self]).map(func)
 
     def get(self, item: str, default: str = None) -> str:
         """Get the given property from the node."""
