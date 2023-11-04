@@ -197,6 +197,51 @@ def test_len(sample_xml_text):
     assert result == 1
 
 
+def test_first(sample_xml_text):
+    # Given
+    xml_doc = parse_xml(sample_xml_text)
+    node = xml_doc.Header
+
+    # When
+    result = node.first()
+
+    # Then
+    assert result is node
+
+
+def test_filter_match(sample_xml_text):
+    # Given
+    item = parse_xml(sample_xml_text).Header.From.Credential
+
+    # When
+    result = item.filter(lambda n: n['domain'] == 'DUNS')
+
+    # Then
+    assert result[0] is item
+
+
+def test_filter_no_match(sample_xml_text):
+    # Given
+    item = parse_xml(sample_xml_text).Header.From.Credential
+
+    # When
+    result = item.filter(lambda n: n['domain'] == 'SNUD')
+
+    # Then
+    assert len(result) == 0
+
+
+def test_map(sample_xml_text):
+    # Given
+    item = parse_xml(sample_xml_text).Header.From.Credential
+
+    # When
+    result = item.map(lambda n: n['domain'])
+
+    # Then
+    assert result == ['DUNS']
+
+
 def test_repr(sample_xml_text):
     # Given
     xml_doc = parse_xml(sample_xml_text)
