@@ -34,6 +34,18 @@ class XmlNode:
         """Get the XML element tag from the node."""
         return self._fixtag(self.node.tag)
 
+    def first(self, default=None):
+        """Seamless interop with XmlNodeList"""
+        return self
+
+    def filter(self, func: callable):
+        """Seamless interop with XmlNodeList"""
+        return XmlNodeList([self]) if func(self) else XmlNodeList([])
+
+    def map(self, func: callable):
+        """Seamless interop with XmlNodeList"""
+        return XmlNodeList([func(self)])
+
     def get(self, item: str, default: str = None) -> str:
         """Get the given property from the node."""
         case_sensitive_item = self.case_insensitive_props.get(item.lower(), item)
