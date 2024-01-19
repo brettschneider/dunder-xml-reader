@@ -16,6 +16,7 @@ jobs:
   publish:
     name: Publish to repository
     uses: ./.github/workflows/publish.yml
+    secrets: inherit
     with:
       repository: testpypi
       password: ${{ secrets.PYPI_TEST_TOKEN }}
