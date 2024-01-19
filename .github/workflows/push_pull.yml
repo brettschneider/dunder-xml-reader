@@ -12,3 +12,10 @@ jobs:
     name: Test and Build Code
     uses: ./.github/workflows/test_and_build.yml
     secrets: inherit
+
+  publish:
+    name: Publish to repository
+    uses: ./.github/workflows/publish.yml
+    with:
+      repository: testpypi
+      password: ${{ secrets.PYPI_TEST_TOKEN }}

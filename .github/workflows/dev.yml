@@ -16,4 +16,4 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       repository: testpypi
-      password: ${{ secrets.PYPI_PROD_TOKEN }}
+      password: ${{ secrets.PYPI_TEST_TOKEN }}
