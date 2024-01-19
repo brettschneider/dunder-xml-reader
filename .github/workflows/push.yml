@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - dev
       - main
-      -
+
 jobs:
   test-package:
     name: Test and Package Code
@@ -31,7 +31,7 @@ jobs:
           path: ./test_results/results.xml
           reporter: java-junit
       - name: Coverage Report
-        uses: 5monkeys/cobertura-action@master
+        uses: 5monkeys/cobertura-action@v13
         with:
           path: ./test_results/coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
