@@ -1,22 +1,25 @@
 name: Development Actions
 
 on:
-  push:
-    branches-ignore:
-      - dev
-      - main
+  workflow_call:
+    inputs:
+      python-version:
+        description: What version of Python to use
+        type: string
+        default: 3.8
+        required: false
 
 jobs:
-  test-package:
+  test-build:
     name: Test and Package Code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Set up Python 3.8
+      - name: Set up Python ${{ inputs.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version:  ${{ inputs.python-version }}
       - name: Install poetry
         run: python -m pip install --upgrade pip poetry poetry-plugin-export
       - name: Setup pipenv virtual environment (and project dependencies)

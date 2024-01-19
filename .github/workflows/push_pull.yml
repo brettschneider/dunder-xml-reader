@@ -1,0 +1,14 @@
+name: Development Actions
+
+on:
+  push:
+    branches-ignore:
+      - dev
+      - main
+  pull_request:
+
+jobs:
+  test-and-build:
+    name: Test and Build Code
+    uses: ./.github/workflows/test_and_build.yml
+    secrets: inherit
