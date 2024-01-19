@@ -22,7 +22,7 @@ jobs:
           python-version:  ${{ inputs.python-version }}
       - name: Install poetry
         run: python -m pip install --upgrade pip poetry poetry-plugin-export
-      - name: Setup pipenv virtual environment (and project dependencies)
+      - name: Setup virtual environment (and project dependencies)
         run: poetry install --with dev
       - name: Run unit tests
         run: ./run-tests.sh
