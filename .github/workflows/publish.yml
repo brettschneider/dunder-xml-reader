@@ -36,10 +36,8 @@ jobs:
               echo "TOKEN=${{ secrets.PYPI_PROD_TOKEN }}" >> $GITHUB_ENV
               ;;
             testpypi)
-              echo "TOKEN=TEST_TOKEN_GOES_HERE" >> $GITHUB_ENV
+              echo "TOKEN=${{ secrets.PYPI_TEST_TOKEN }}" >> $GITHUB_ENV
               ;;
           esac
       - name: Publish
-        run: |
-          echo Token: ${{ env.TOKEN }}
-#          poetry publish -r ${{ inputs.repository }} -u __token__ -p ${{ inputs.password }} --dry-run
+        run: poetry publish -r ${{ inputs.repository }} -u __token__ -p ${{ env.TOKEN }} --dry-run
