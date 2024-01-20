@@ -1,6 +1,23 @@
 name: Publish Package
 
 on:
+  workflow_call:
+    inputs:
+      git-ref:
+        description: What git tag/branch to release
+        type: string
+        required: true
+        default: dev
+      repository:
+        description: Repository to publish to
+        type: string
+        required: true
+      python-version:
+        description: Version of Python
+        type: string
+        required: false
+        default: "3.8"
+
   workflow_dispatch:
     inputs:
       git-ref:
