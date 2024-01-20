@@ -60,6 +60,7 @@ jobs:
               poetry config http-basic.testpypi __token__ "${{ secrets.PYPI_TEST_TOKEN }}"
               ;;
             pypi)
+              poetry config repositories.pypi https://pypi.org/legacy/
               poetry config http-basic.pypi __token__ "${{ secrets.PYPI_PROD_TOKEN }}"
               ;;
             *)
