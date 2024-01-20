@@ -5,7 +5,10 @@ on:
     inputs:
       repository:
         description: Repository to publish to
-        type: string
+        type: choice
+        options:
+          - testpypi
+          - pypi
         required: true
       python-version:
         description: Version of Python
