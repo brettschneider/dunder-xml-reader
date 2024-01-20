@@ -15,6 +15,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.dependencies]
 python = ">=3.8"
 
