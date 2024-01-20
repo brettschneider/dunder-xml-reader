@@ -1,26 +1,39 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
-name = "dunder_xml_reader"
-version = "0.0.7"
-authors = [
-  { name="Steve Brettschneider", email="steve@bluehousefamily.com" },
-]
+[tool.poetry]
+name = "dunder-xml-reader"
+version = "0.1.0"
 description = "Pythonic XML parsing/reading"
+authors = ["Steve Brettschneider <steve@bluehousefamily.com>"]
+license = "MIT"
 readme = "README.md"
-license = { file="LICENSE" }
-requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
 ]
 
-[tool.setuptools]
-packages = ["dunder_xml_reader"]
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+pytest-mock = "^3.12.0"
+pytest-coverage = "^0.0"
 
 [project.urls]
 "Homepage" = "https://github.com/brettschneider/dunder-xml-reader"
 "Bug Tracker" = "https://github.com/brettschneider/dunder-xml-reader/issues"
+
+[tool.coverage.run]
+branch = true
+omit = ["test/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
