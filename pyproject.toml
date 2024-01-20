@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "dunder-xml-reader"
-version = "0.1.0"
+version = "0.1.2"
 description = "Pythonic XML parsing/reading"
 authors = ["Steve Brettschneider <steve@bluehousefamily.com>"]
 license = "MIT"
