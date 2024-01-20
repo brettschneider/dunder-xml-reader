@@ -71,4 +71,4 @@ jobs:
       - name: Setup virtual environment (and project dependencies)
         run: poetry install
       - name: Publish
-        run: poetry publish --build -r ${{ inputs.repository }} --dry-run
+        run: poetry publish --build -r ${{ inputs.repository }}
