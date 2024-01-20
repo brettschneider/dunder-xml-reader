@@ -47,4 +47,13 @@ jobs:
           git add pyproject.toml
           git commit -m"Updated version to $(poetry version -s)"
           git push origin dev
-          
+
+  publish-to-pypi:
+    name: Publish package
+    needs: tag-commit
+    uses: ./.github/workflows/publish.yml
+    with:
+      python-version: ${{ inputs.python-version }}
+      repository: pypi
+      git-ref: ${{ inputs.git-ref }}
+

@@ -3,6 +3,11 @@ name: Publish Package
 on:
   workflow_dispatch:
     inputs:
+      git-ref:
+        description: What git tag/branch to release
+        type: string
+        required: true
+        default: dev
       repository:
         description: Repository to publish to
         type: choice
