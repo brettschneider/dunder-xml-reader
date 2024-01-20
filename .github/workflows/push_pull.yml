@@ -12,11 +12,3 @@ jobs:
     name: Test and Build Code
     uses: ./.github/workflows/test_and_build.yml
     secrets: inherit
-
-  publish:
-    name: Publish to repository
-    needs: test-and-build
-    uses: ./.github/workflows/publish.yml
-    secrets: inherit
-    with:
-      repository: testpypi
